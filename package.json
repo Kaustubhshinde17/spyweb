@@ -7,6 +7,7 @@
     "dev:frontend": "cd spyweb-digital-fortress && npm run dev"
   },
   "dependencies": {
+    "vite": "^5.x.x",
     "baseline-browser-mapping": "^2.9.19",
     "caniuse-lite": "^1.0.30001770",
     "mongodb": "^7.1.0"
