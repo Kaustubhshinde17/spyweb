@@ -1,0 +1,14 @@
+{
+  "name": "spyweb-root",
+  "private": true,
+  "scripts": {
+    "dev": "cd spyweb-digital-fortress && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd spyweb-digital-fortress && npm run dev"
+  },
+  "dependencies": {
+    "baseline-browser-mapping": "^2.9.19",
+    "caniuse-lite": "^1.0.30001770",
+    "mongodb": "^7.1.0"
+  }
+}
