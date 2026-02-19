@@ -6,7 +6,9 @@
     "dev": "nodemon server.js",
     "dev": "cd spyweb-digital-fortress && npm run dev",
     "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd spyweb-digital-fortress && npm run dev"
+    "dev:frontend": "cd spyweb-digital-fortress && npm run dev",
+    "build": "cd backend && npm install",
+    "start": "cd backend && node server.js"
   },
   "dependencies": {
     "vite": "^5.x.x",
