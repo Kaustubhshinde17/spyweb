@@ -2,8 +2,6 @@
   "name": "spyweb-root",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
     "dev": "cd spyweb-digital-fortress && npm run dev",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd spyweb-digital-fortress && npm run dev",
