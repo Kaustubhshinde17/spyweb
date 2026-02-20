@@ -1,6 +1,5 @@
 {
-    "buildCommand": "cd spyweb-digital-fortress && npm install && npm run build",
-    "outputDirectory": "spyweb-digital-fortress/dist",
+    "cleanUrls": true,
     "rewrites": [
         {
             "source": "/(.*)",
