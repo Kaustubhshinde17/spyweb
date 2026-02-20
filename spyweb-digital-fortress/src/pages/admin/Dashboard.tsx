@@ -42,9 +42,9 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const [servicesRes, projectsRes, clientsRes] = await Promise.all([
-          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/services`),
-          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects`),
-          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/clients`)
+          fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/services`),
+          fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/projects`),
+          fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/clients`)
         ]);
 
         const services = await servicesRes.json();

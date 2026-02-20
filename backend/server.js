@@ -14,11 +14,19 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*', // Allow specific origin in production, or all for now
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('SPYWEB API is running... 🚀');
+});
+
 app.use('/api/clients/auth', require('./routes/clientAuth'));
 app.use('/api/clients', clientRoutes);
 app.use('/api/contacts', contactRoutes);

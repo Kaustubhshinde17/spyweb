@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Globe, Palette, ShoppingCart, Smartphone, ShieldCheck, Cloud, Shield, Code, Lock, Zap, Loader2 } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com';
 
 // Icon mapping for dynamic services
 const iconMap: Record<string, any> = {
