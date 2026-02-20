@@ -20,8 +20,16 @@ const ContactSection = () => {
     e.preventDefault();
     setSubmitting(true);
 
+    console.log('🚀 Starting form submission...');
+    console.log('Checking EmailJS Config:', {
+      hasService: !!EMAILJS_SERVICE_ID,
+      hasTemplate: !!EMAILJS_TEMPLATE_ID,
+      hasKey: !!EMAILJS_PUBLIC_KEY
+    });
+
     try {
       // 1. Save to database (backend)
+      console.log('Saving to database at:', `${API_URL}/api/contacts`);
       const response = await fetch(`${API_URL}/api/contacts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -29,13 +37,18 @@ const ContactSection = () => {
       });
 
       if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Database Error Details:', errorData);
         throw new Error('Failed to save message to database');
       }
 
+      console.log('✅ Message saved to database successfully');
+
       // 2. Send emails via EmailJS (Frontend API - Bypass Render SMTP blocks)
       if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
+        console.log('Sending email via EmailJS...');
         try {
-          await emailjs.send(
+          const result = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
             {
@@ -47,10 +60,16 @@ const ContactSection = () => {
             },
             EMAILJS_PUBLIC_KEY
           );
-          console.log('✉️ Emails triggered via EmailJS');
+          console.log('✉️ EmailJS Success:', result.status, result.text);
         } catch (emailError) {
-          console.error('EmailJS Error:', emailError);
+          console.error('❌ EmailJS Send Error:', emailError);
         }
+      } else {
+        console.warn('⚠️ EmailJS not called. Missing credentials:', {
+          serviceId: EMAILJS_SERVICE_ID ? 'OK' : 'MISSING',
+          templateId: EMAILJS_TEMPLATE_ID ? 'OK' : 'MISSING',
+          publicKey: EMAILJS_PUBLIC_KEY ? 'OK' : 'MISSING',
+        });
       }
 
       toast({
@@ -59,7 +78,7 @@ const ContactSection = () => {
       });
       setForm({ name: "", email: "", message: "" });
     } catch (error) {
-      console.error('Error submitting contact form:', error);
+      console.error('❌ Global Submission Error:', error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
