@@ -2,7 +2,7 @@
   "name": "spyweb-root",
   "private": true,
   "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix spyweb-digital-fortress",
+    "build": "npm install --prefix backend && npm install --prefix spyweb-digital-fortress && npm run build --prefix spyweb-digital-fortress",
     "start": "node backend/server.js",
     "dev": "npm run dev --prefix spyweb-digital-fortress",
     "dev:backend": "npm run dev --prefix backend"
