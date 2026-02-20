@@ -21,7 +21,7 @@ const ContactSection = () => {
     setSubmitting(true);
 
     try {
-      // 1. Save to database
+      // Save to database and trigger backend emails
       const response = await fetch(`${API_URL}/api/contacts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,39 +32,15 @@ const ContactSection = () => {
         throw new Error('Failed to submit contact form');
       }
 
-      // 2. Send auto-reply email via EmailJS (if configured)
-      if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
-        try {
-          await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            {
-              to_name: form.name,
-              to_email: form.email,
-              user_message: form.message,
-              from_name: "SPYWEB Team",
-              reply_to: "abhisudame1@gmail.com",
-            },
-            EMAILJS_PUBLIC_KEY
-          );
-          console.log('✉️ Auto-reply email sent via EmailJS');
-        } catch (emailError) {
-          console.error('Failed to send email via EmailJS:', emailError);
-          // Don't fail the entire submission if email fails
-        }
-      } else {
-        console.warn('⚠️ EmailJS not configured - skipping auto-reply');
-      }
-
-      toast({ 
-        title: "Message sent!", 
-        description: "Thank you for reaching out. We'll get back to you shortly." 
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. We'll get back to you shortly."
       });
       setForm({ name: "", email: "", message: "" });
     } catch (error) {
       console.error('Error submitting contact form:', error);
-      toast({ 
-        title: "Error", 
+      toast({
+        title: "Error",
         description: "Failed to send message. Please try again.",
         variant: "destructive"
       });
