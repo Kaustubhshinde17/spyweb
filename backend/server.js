@@ -42,7 +42,13 @@ app.use('/api/about', aboutRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.json({
+    status: 'ok',
+    server: 'running',
+    database: dbStatus,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // 404 handler
