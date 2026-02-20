@@ -21,7 +21,7 @@ const ContactSection = () => {
     setSubmitting(true);
 
     try {
-      // Save to database and trigger backend emails
+      // 1. Save to database (backend)
       const response = await fetch(`${API_URL}/api/contacts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -29,7 +29,28 @@ const ContactSection = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit contact form');
+        throw new Error('Failed to save message to database');
+      }
+
+      // 2. Send emails via EmailJS (Frontend API - Bypass Render SMTP blocks)
+      if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
+        try {
+          await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            {
+              to_name: form.name,
+              to_email: form.email,
+              user_message: form.message,
+              from_name: "SPYWEB Team",
+              reply_to: "abhisudame1@gmail.com",
+            },
+            EMAILJS_PUBLIC_KEY
+          );
+          console.log('✉️ Emails triggered via EmailJS');
+        } catch (emailError) {
+          console.error('EmailJS Error:', emailError);
+        }
       }
 
       toast({

@@ -50,39 +50,13 @@ router.post('/', async (req, res) => {
     const savedContact = await contact.save();
     console.log('✅ Contact saved to database');
 
-    // Send emails
+    /* 
+    // Commented out because Render blocks direct SMTP connections (Connection Timeout)
+    // Using EmailJS in the frontend instead.
     if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
-      // 1. Send auto-reply to user
-      const userTemplate = autoReplyTemplate(name, message);
-      sendEmail(email, userTemplate.subject, userTemplate.html)
-        .then(result => {
-          if (result.success) {
-            console.log(`✉️  Auto-reply sent to ${email}`);
-          } else {
-            console.error(`❌ Failed to send auto-reply to ${email}:`, result.error);
-          }
-        })
-        .catch(error => {
-          console.error('❌ Auto-reply error:', error);
-        });
-
-      // 2. Send notification to admin
-      const adminTemplate = adminNotificationTemplate(name, email, message);
-      const adminEmail = process.env.ADMIN_EMAIL || 'abhisudame1@gmail.com';
-      sendEmail(adminEmail, adminTemplate.subject, adminTemplate.html)
-        .then(result => {
-          if (result.success) {
-            console.log(`🔔 Admin notification sent to ${adminEmail}`);
-          } else {
-            console.error(`❌ Failed to send admin notification to ${adminEmail}:`, result.error);
-          }
-        })
-        .catch(error => {
-          console.error('❌ Admin notification error:', error);
-        });
-    } else {
-      console.warn('⚠️  Email not configured - skipping emails');
+      // ... same logic ...
     }
+    */
 
     res.status(201).json({
       message: 'Contact form submitted successfully',
