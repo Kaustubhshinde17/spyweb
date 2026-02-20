@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com';
@@ -85,6 +85,19 @@ const ManageAbout = () => {
     setAboutData({ ...aboutData, leadership: newLeadership });
   };
 
+  const handleAddLeader = () => {
+    setAboutData({
+      ...aboutData,
+      leadership: [...aboutData.leadership, { name: '', role: '' }]
+    });
+  };
+
+  const handleRemoveLeader = (index: number) => {
+    const newLeadership = [...aboutData.leadership];
+    newLeadership.splice(index, 1);
+    setAboutData({ ...aboutData, leadership: newLeadership });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -160,13 +173,19 @@ const ManageAbout = () => {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Leadership Team</CardTitle>
-          <CardDescription>Company ownership and leadership</CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Leadership Team</CardTitle>
+            <CardDescription>Company ownership and leadership</CardDescription>
+          </div>
+          <Button onClick={handleAddLeader} variant="outline" size="sm">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Leader
+          </Button>
         </CardHeader>
         <CardContent className="space-y-4">
           {aboutData.leadership.map((leader, index) => (
-            <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border border-border rounded-lg">
+            <div key={index} className="relative grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border border-border rounded-lg group">
               <div className="space-y-2">
                 <Label htmlFor={`leader-name-${index}`}>Name</Label>
                 <Input
@@ -174,16 +193,29 @@ const ManageAbout = () => {
                   value={leader.name}
                   onChange={(e) => handleLeadershipChange(index, 'name', e.target.value)}
                   disabled={saving}
+                  placeholder="Enter name"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor={`leader-role-${index}`}>Role</Label>
-                <Input
-                  id={`leader-role-${index}`}
-                  value={leader.role}
-                  onChange={(e) => handleLeadershipChange(index, 'role', e.target.value)}
-                  disabled={saving}
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id={`leader-role-${index}`}
+                    value={leader.role}
+                    onChange={(e) => handleLeadershipChange(index, 'role', e.target.value)}
+                    disabled={saving}
+                    placeholder="Enter role (e.g. Founder)"
+                  />
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => handleRemoveLeader(index)}
+                    disabled={saving}
+                    className="shrink-0"
+                  >
+                    <Trash2 size={18} />
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
