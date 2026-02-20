@@ -7,3 +7,7 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.11.0
+      - key: MONGODB_URI
+        value: mongodb+srv://spywebtech:eI9OkqExPla99zFB@cluster0.fxmwfzf.mongodb.net/spyweb_db?retryWrites=true&w=majority
+      - key: PORT
+        value: 5000
