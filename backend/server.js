@@ -24,7 +24,11 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('SPYWEB API is running... 🚀');
+  res.json({
+    message: 'SPYWEB API is live! 🚀',
+    version: '1.0.1',
+    status: 'online'
+  });
 });
 
 app.use('/api/clients/auth', require('./routes/clientAuth'));
