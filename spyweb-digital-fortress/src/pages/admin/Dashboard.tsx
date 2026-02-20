@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase, FolderKanban, Users, TrendingUp } from 'lucide-react';
+import { Briefcase, FolderKanban, Users, Mail, TrendingUp } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,32 +30,34 @@ const Dashboard = () => {
       color: 'text-purple-500',
     },
     {
-      title: 'Growth Rate',
-      value: '+15%', // Placeholder as valid calculation would require historical data
-      icon: TrendingUp,
-      description: 'Month over month',
-      color: 'text-primary',
+      title: 'Total Messages',
+      value: '0',
+      icon: Mail,
+      description: 'Contact submissions',
+      color: 'text-orange-500',
     },
   ]);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [servicesRes, projectsRes, clientsRes] = await Promise.all([
+        const [servicesRes, projectsRes, clientsRes, contactsRes] = await Promise.all([
           fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/services`),
           fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/projects`),
-          fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/clients`)
+          fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/clients`),
+          fetch(`${import.meta.env.VITE_API_URL || 'https://spyweb-3.onrender.com'}/api/contacts`)
         ]);
 
         const services = await servicesRes.json();
         const projects = await projectsRes.json();
         const clients = await clientsRes.json();
+        const contacts = await contactsRes.json();
 
         setStats(prev => [
-          { ...prev[0], value: services.length.toString() },
-          { ...prev[1], value: projects.length.toString() },
-          { ...prev[2], value: clients.length.toString() },
-          prev[3]
+          { ...prev[0], value: (services.length || 0).toString() },
+          { ...prev[1], value: (projects.length || 0).toString() },
+          { ...prev[2], value: (clients.length || 0).toString() },
+          { ...prev[3], value: (contacts.length || 0).toString() }
         ]);
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
